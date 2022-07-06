@@ -1,0 +1,36 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { ManageComponent } from './manage/manage.component';
+import { UploadComponent } from './upload/upload.component';
+import {
+  AngularFireAuthGuard,
+  redirectUnauthorizedTo,
+} from '@angular/fire/compat/auth-guard';
+
+const redirectUnauthorizedToHome = () => redirectUnauthorizedTo('/');
+
+const routes: Routes = [
+  {
+    path: 'manage',
+    component: ManageComponent,
+    data: {
+      authGuardPipe: redirectUnauthorizedToHome,
+    },
+    canActivate: [AngularFireAuthGuard],
+  },
+  {
+    path: 'upload',
+    component: UploadComponent,
+    data: {
+      authGuardPipe: redirectUnauthorizedToHome,
+    },
+    canActivate: [AngularFireAuthGuard],
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class VideoRoutingModule {}
